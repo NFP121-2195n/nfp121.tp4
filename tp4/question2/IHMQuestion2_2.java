@@ -12,6 +12,13 @@ public class IHMQuestion2_2 extends JFrame {
 
     private TextArea contenu = new TextArea(30, 80);
 
+    private JMouseObserver jmo1 = new JMouseObserver("jmo1", contenu);
+    private JMouseObserver jmo2 = new JMouseObserver("jmo2", contenu);
+    private JMouseObserver jmo3 = new JMouseObserver("jmo3", contenu);
+    
+    private JButtonObserver jbo1 = new JButtonObserver("jbo1", contenu);
+    private JButtonObserver jbo2 = new JButtonObserver("jbo2", contenu);
+    private JButtonObserver jbo3 = new JButtonObserver("jbo3", contenu);
  
     public IHMQuestion2_2() {
         super("IHM Question2_2");
@@ -27,17 +34,70 @@ public class IHMQuestion2_2 extends JFrame {
         enHaut.setBackground(Color.magenta);
         
 
-        // à compléter à l'identique de la question 2_1, (du copier/coller)...
-        // le bouton A a 3 observateurs jbo1, jbo2 et jbo3
+                
+        // le bouton A a 1 observateur jmo1
+        boutonA.addMouseListener(new MouseListener(){
+            public void mouseClicked(MouseEvent e){}
+            public void mouseEntered(MouseEvent e){
+                contenu.setText("");
+                jmo1.mouseEntered(e);
+            }
+            public void mouseExited(MouseEvent e){}
+            public void mousePressed(MouseEvent e){}
+            public void mouseReleased(MouseEvent e){}
+        });
 
+        // le bouton A a 3 observateurs jbo1, jbo2 et jbo3        
+        boutonA.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                jbo3.actionPerformed(e);
+                jbo2.actionPerformed(e);
+                jbo1.actionPerformed(e);
+            }
+        });
+
+        
+        
+        // le bouton B a 1 observateur jmo2
+        boutonB.addMouseListener(new MouseListener(){
+            public void mouseClicked(MouseEvent e){}
+            public void mouseEntered(MouseEvent e){
+                contenu.setText("");
+                jmo2.mouseEntered(e);
+            }
+            public void mouseExited(MouseEvent e){}
+            public void mousePressed(MouseEvent e){}
+            public void mouseReleased(MouseEvent e){}
+        });
+                
         // le bouton B a 2 observateurs jbo1 et jbo2
+        boutonB.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                jbo2.actionPerformed(e);
+                jbo1.actionPerformed(e);
+            }
+        });
 
-        // le bouton C a 1 observateur jbo1
+        
+        // le bouton C a 1 observateur jmo3
+        boutonC.addMouseListener(new MouseListener(){
+            public void mouseClicked(MouseEvent e){}
+            public void mouseEntered(MouseEvent e){
+                contenu.setText("");
+                jmo3.mouseEntered(e);
+            }
+            public void mouseExited(MouseEvent e){}
+            public void mousePressed(MouseEvent e){}
+            public void mouseReleased(MouseEvent e){}
+        });
 
-        // à compléter pour la question 2_2 (JMouseObserver)
-            // le bouton A a 1 observateur jmo1
-            // le bouton B a 1 observateur jmo2
-            // le bouton C a 1 observateur jmo3
+        // le bouton C a 1 observateur jbo1        
+        boutonC.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                jbo1.actionPerformed(e);
+            }
+        });
+
         
     }
     

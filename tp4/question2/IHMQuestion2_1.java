@@ -10,6 +10,8 @@ public class IHMQuestion2_1 extends JFrame {
     private JButton boutonB = new JButton("B");
     private JButton boutonC = new JButton("C");
 
+    private JButtonObserver jbo1, jbo2, jbo3;
+    
     private TextArea contenu = new TextArea(30, 80);
 
  
@@ -23,17 +25,42 @@ public class IHMQuestion2_1 extends JFrame {
         add("North", enHaut);
         add("Center", contenu); // contenu sera transmis aux observateurs, voir
                                 // la description des constructeurs
+                                
+        jbo1 = new JButtonObserver("jbo1", contenu);
+        jbo2 = new JButtonObserver("jbo2", contenu);
+        jbo3 = new JButtonObserver("jbo3", contenu);          
+    
         enHaut.setBackground(Color.blue);
         setLocation(100,100);
         pack();show();
 
         // à compléter
         // le bouton A a 3 observateurs jbo1, jbo2 et jbo3
-
+        boutonA.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                contenu.setText("");
+                jbo3.actionPerformed(e);
+                jbo2.actionPerformed(e);
+                jbo1.actionPerformed(e);
+            }
+        });
+        
         // le bouton B a 2 observateurs jbo1 et jbo2
-
+        boutonB.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                contenu.setText("");
+                jbo2.actionPerformed(e);
+                jbo1.actionPerformed(e);
+            }
+        });
+        
         // le bouton C a 1 observateur jbo1
-
+        boutonC.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                contenu.setText("");
+                jbo1.actionPerformed(e);
+            }
+        });
       
     }
     

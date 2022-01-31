@@ -33,23 +33,123 @@ public class Controleur extends JPanel {
         this.clear = new JButton("[]");
 
         setLayout(new GridLayout(2, 1));
+        
         add(donnee);
-        donnee.addActionListener(null /* null est à remplacer */);
+        
+        donnee.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                try{
+                    int donnee = operande();
+                }catch(NumberFormatException nfe){
+                    donnee.setText("");
+                    JOptionPane.showMessageDialog(null, donnee.getText()+" n'est pas un nombre entier");
+                }
+            }
+        });
+        
+        
         JPanel boutons = new JPanel();
         boutons.setLayout(new FlowLayout());
-        boutons.add(push);  push.addActionListener(null /* null est à remplacer */);
-        boutons.add(add);   add.addActionListener(null /* null est à remplacer */);
-        boutons.add(sub);   sub.addActionListener(null /* null est à remplacer */);
-        boutons.add(mul);   mul.addActionListener(null /* null est à remplacer */);
-        boutons.add(div);   div.addActionListener(null /* null est à remplacer */);
-        boutons.add(clear); clear.addActionListener(null /* null est à remplacer */);
+        
+        
+        boutons.add(push);  push.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+             try{
+                    pile.empiler(operande());
+                }catch(Exception e1){}
+             actualiserInterface();
+            }
+        }
+        );
+        boutons.add(add);   add.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                try{
+                    pile.empiler(pile.depiler() + pile.depiler());
+                }catch(Exception e2){}
+                actualiserInterface();
+            }
+        }
+        );
+        boutons.add(sub);   sub.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                try{
+                    int sommet = pile.sommet();
+                    pile.depiler();
+                    pile.empiler(pile.depiler() - sommet);
+                }catch (Exception e3){}
+                actualiserInterface();
+            }
+        }
+        );
+        boutons.add(mul);   mul.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                try{
+                    pile.empiler(pile.depiler() * pile.depiler());
+                }catch(Exception e4){}
+                actualiserInterface();
+            }
+        }
+        );
+        boutons.add(div);   div.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                try{
+                    int res = divisionParZero();
+                    actualiserInterface();
+                }catch(Exception e5){}
+            }
+        }
+        );
+        boutons.add(clear); clear.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                donnee.setText("");
+                for(int i=0; i<pile.taille(); i++){
+                    try{
+                        pile.depiler();
+                    }catch(Exception e6){}
+                }
+                actualiserInterface();
+            }
+        }
+        );
+        
         add(boutons);
         boutons.setBackground(Color.red);
         actualiserInterface();
     }
 
     public void actualiserInterface() {
-        // à compléter
+       if(pile.estVide()){
+          add.setEnabled(false);
+          sub.setEnabled(false);
+          mul.setEnabled(false);
+          div.setEnabled(false);
+          clear.setEnabled(false);
+          push.setEnabled(true);
+       }
+       else if(pile.taille()== 1){
+          add.setEnabled(false);
+          sub.setEnabled(false);
+          mul.setEnabled(false);
+          div.setEnabled(false);
+          clear.setEnabled(true);
+          push.setEnabled(true);
+       }
+       else if(pile.taille()> 1){
+          add.setEnabled(true);
+          sub.setEnabled(true);
+          mul.setEnabled(true);
+          div.setEnabled(true);
+          clear.setEnabled(true);
+          push.setEnabled(true);
+       }
+       else if(pile.estPleine()) {
+          push.setEnabled(false);
+          add.setEnabled(true);
+          sub.setEnabled(true);
+          mul.setEnabled(true);
+          div.setEnabled(true);
+          clear.setEnabled(true);
+       }
     }
 
     private Integer operande() throws NumberFormatException {
@@ -58,6 +158,21 @@ public class Controleur extends JPanel {
 
     // à compléter
     // en cas d'exception comme division par zéro, 
+    private Integer divisionParZero() throws ArithmeticException {
+        int res = 0;
+        try{
+            int sommet = this.pile.sommet();
+            if(sommet == 0){
+                JOptionPane.showMessageDialog(null, "Cannot divide by 0");
+                return null;
+            }
+            this.pile.depiler();
+            res = (Integer)this.pile.depiler()/sommet;
+            this.pile.empiler(res);
+        }catch(Exception e){}
+        return res;
+    }
+    
     // mauvais format de nombre suite à l'appel de la méthode operande
     // la pile reste en l'état (intacte)
 
